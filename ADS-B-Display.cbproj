@@ -229,6 +229,12 @@
             <DependentOn>LatLonConv.h</DependentOn>
             <BuildOrder>33</BuildOrder>
         </CppCompile>
+        <CppCompile Include="LoginDialog.cpp">
+            <Form>LoginDiaglog</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>LoginDialog.h</DependentOn>
+            <BuildOrder>38</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Map\MapSrc\EarthView.cpp">
             <DependentOn>Map\MapSrc\EarthView.h</DependentOn>
             <BuildOrder>23</BuildOrder>
@@ -340,6 +346,7 @@
         </CppCompile>
         <FormResources Include="DisplayGUI.dfm"/>
         <FormResources Include="AreaDialog.dfm"/>
+        <FormResources Include="LoginDialog.dfm"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

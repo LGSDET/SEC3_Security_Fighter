@@ -3,9 +3,11 @@
 #include <vcl.h>
 #pragma hdrstop
 #include <tchar.h>
+#include "LoginDialog.h"
 //---------------------------------------------------------------------------
 USEFORM("DisplayGUI.cpp", Form1);
 USEFORM("AreaDialog.cpp", AreaConfirm);
+USEFORM("LoginDialog.cpp", LoginDiaglog);
 //---------------------------------------------------------------------------
 static FILE* pCout = NULL;
 static void SetStdOutToNewConsole(void);
@@ -26,8 +28,14 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
         SetStdOutToNewConsole();
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		Application->CreateForm(__classid(TForm1), &Form1);
+
+        Application->CreateForm(__classid(TForm1), &Form1);
 		Application->CreateForm(__classid(TAreaConfirm), &AreaConfirm);
+        Application->CreateForm(__classid(TLoginDiaglog), &LoginDiaglog);
+        int result = LoginDiaglog->ShowModal();
+        if(!LoginDiaglog->IsLoginSuccess()) return 0;
+
+		printf("ADS-B Display Application started\n");
 		Application->Run();
 	   if (pCout)
 		{
