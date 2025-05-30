@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -31,9 +31,9 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 
         Application->CreateForm(__classid(TForm1), &Form1);
 		Application->CreateForm(__classid(TAreaConfirm), &AreaConfirm);
-        Application->CreateForm(__classid(TLoginDiaglog), &LoginDiaglog);
-        int result = LoginDiaglog->ShowModal();
-        if(!LoginDiaglog->IsLoginSuccess()) return 0;
+		Application->CreateForm(__classid(TLoginDiaglog), &LoginDiaglog);
+		int result = LoginDiaglog->ShowModal();
+		if(!LoginDiaglog->IsLoginSuccess()) return 0;
 
 		printf("ADS-B Display Application started\n");
 		Application->Run();

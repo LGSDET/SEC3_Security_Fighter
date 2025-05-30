@@ -200,149 +200,155 @@
         </PCHCompile>
         <CppCompile Include="Aircraft.cpp">
             <DependentOn>Aircraft.h</DependentOn>
-            <BuildOrder>39</BuildOrder>
+            <BuildOrder>29</BuildOrder>
         </CppCompile>
         <CppCompile Include="AreaDialog.cpp">
             <Form>AreaConfirm</Form>
             <FormType>dfm</FormType>
             <DependentOn>AreaDialog.h</DependentOn>
-            <BuildOrder>34</BuildOrder>
+            <BuildOrder>23</BuildOrder>
         </CppCompile>
         <CppCompile Include="CPA.cpp">
             <DependentOn>CPA.h</DependentOn>
-            <BuildOrder>37</BuildOrder>
+            <BuildOrder>25</BuildOrder>
         </CppCompile>
+        <CppCompile Include="crypto.cpp">
+            <BuildOrder>27</BuildOrder>
+        </CppCompile>
+        <None Include="crypto.h">
+            <BuildOrder>40</BuildOrder>
+        </None>
         <CppCompile Include="DecodeRawADS_B.cpp">
             <DependentOn>DecodeRawADS_B.h</DependentOn>
-            <BuildOrder>35</BuildOrder>
+            <BuildOrder>24</BuildOrder>
         </CppCompile>
         <CppCompile Include="DisplayGUI.cpp">
             <Form>Form1</Form>
             <FormType>dfm</FormType>
             <DependentOn>DisplayGUI.h</DependentOn>
-            <BuildOrder>32</BuildOrder>
+            <BuildOrder>21</BuildOrder>
         </CppCompile>
         <None Include="dms.h">
             <BuildOrder>36</BuildOrder>
         </None>
         <CppCompile Include="LatLonConv.cpp">
             <DependentOn>LatLonConv.h</DependentOn>
-            <BuildOrder>33</BuildOrder>
+            <BuildOrder>22</BuildOrder>
         </CppCompile>
         <CppCompile Include="LoginDialog.cpp">
             <Form>LoginDiaglog</Form>
             <FormType>dfm</FormType>
             <DependentOn>LoginDialog.h</DependentOn>
-            <BuildOrder>38</BuildOrder>
+            <BuildOrder>28</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\EarthView.cpp">
             <DependentOn>Map\MapSrc\EarthView.h</DependentOn>
-            <BuildOrder>23</BuildOrder>
+            <BuildOrder>1</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\Exceptions.h">
             <BuildOrder>24</BuildOrder>
         </None>
         <CppCompile Include="Map\MapSrc\FileSystemStorage.cpp">
             <DependentOn>Map\MapSrc\FileSystemStorage.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>6</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\FlatEarthView.cpp">
             <DependentOn>Map\MapSrc\FlatEarthView.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>7</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\Global.cpp">
             <DependentOn>Map\MapSrc\Global.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>5</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\GlUtil.cpp">
             <DependentOn>Map\MapSrc\GlUtil.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>2</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\GoogleLayer.cpp">
             <DependentOn>Map\MapSrc\GoogleLayer.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>3</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\KeyholeConnection.cpp">
             <DependentOn>Map\MapSrc\KeyholeConnection.h</DependentOn>
-            <BuildOrder>24</BuildOrder>
+            <BuildOrder>4</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\Layer.h">
             <BuildOrder>25</BuildOrder>
         </None>
         <CppCompile Include="Map\MapSrc\MasterLayer.cpp">
             <DependentOn>Map\MapSrc\MasterLayer.h</DependentOn>
-            <BuildOrder>25</BuildOrder>
+            <BuildOrder>9</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\RawBuffer.cpp">
             <DependentOn>Map\MapSrc\RawBuffer.h</DependentOn>
-            <BuildOrder>25</BuildOrder>
+            <BuildOrder>8</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\Region.h">
             <BuildOrder>26</BuildOrder>
         </None>
         <CppCompile Include="Map\MapSrc\SimpleTileStorage.cpp">
             <DependentOn>Map\MapSrc\SimpleTileStorage.h</DependentOn>
-            <BuildOrder>26</BuildOrder>
+            <BuildOrder>10</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\SlaveLayer.cpp">
             <DependentOn>Map\MapSrc\SlaveLayer.h</DependentOn>
-            <BuildOrder>26</BuildOrder>
+            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\SmartPtr.h">
             <BuildOrder>27</BuildOrder>
         </None>
         <CppCompile Include="Map\MapSrc\Texture.cpp">
             <DependentOn>Map\MapSrc\Texture.h</DependentOn>
-            <BuildOrder>27</BuildOrder>
+            <BuildOrder>12</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\TextureTile.cpp">
             <DependentOn>Map\MapSrc\TextureTile.h</DependentOn>
-            <BuildOrder>27</BuildOrder>
+            <BuildOrder>13</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\Tile.cpp">
             <DependentOn>Map\MapSrc\Tile.h</DependentOn>
-            <BuildOrder>27</BuildOrder>
+            <BuildOrder>14</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\TileManager.cpp">
             <DependentOn>Map\MapSrc\TileManager.h</DependentOn>
-            <BuildOrder>27</BuildOrder>
+            <BuildOrder>15</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\TileStorage.h">
             <BuildOrder>28</BuildOrder>
         </None>
         <CppCompile Include="Map\MapSrc\Timer.cpp">
             <DependentOn>Map\MapSrc\Timer.h</DependentOn>
-            <BuildOrder>28</BuildOrder>
+            <BuildOrder>16</BuildOrder>
         </CppCompile>
         <CppCompile Include="Map\MapSrc\ViewPoint.cpp">
             <DependentOn>Map\MapSrc\ViewPoint.h</DependentOn>
-            <BuildOrder>28</BuildOrder>
+            <BuildOrder>17</BuildOrder>
         </CppCompile>
         <None Include="Map\MapSrc\VMath.h">
             <BuildOrder>29</BuildOrder>
         </None>
         <CppCompile Include="ntds2d.cpp">
             <DependentOn>ntds2d.h</DependentOn>
-            <BuildOrder>30</BuildOrder>
+            <BuildOrder>18</BuildOrder>
         </CppCompile>
         <CppCompile Include="PointInPolygon.cpp">
             <DependentOn>PointInPolygon.h</DependentOn>
-            <BuildOrder>32</BuildOrder>
+            <BuildOrder>20</BuildOrder>
         </CppCompile>
         <CppCompile Include="SBS_Message.cpp">
             <DependentOn>SBS_Message.h</DependentOn>
-            <BuildOrder>40</BuildOrder>
+            <BuildOrder>30</BuildOrder>
         </CppCompile>
         <None Include="stb_image.h">
             <BuildOrder>37</BuildOrder>
         </None>
         <CppCompile Include="TimeFunctions.cpp">
             <DependentOn>TimeFunctions.h</DependentOn>
-            <BuildOrder>38</BuildOrder>
+            <BuildOrder>26</BuildOrder>
         </CppCompile>
         <CppCompile Include="TriangulatPoly.cpp">
             <DependentOn>TriangulatPoly.h</DependentOn>
-            <BuildOrder>32</BuildOrder>
+            <BuildOrder>19</BuildOrder>
         </CppCompile>
         <FormResources Include="DisplayGUI.dfm"/>
         <FormResources Include="AreaDialog.dfm"/>
