@@ -2,6 +2,7 @@
 
 #pragma hdrstop
 #include <windows.h>
+#include <wincrypt.h>
 #include "crypto.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -39,6 +40,73 @@ EVP_DecryptInit_ex_Func pEVP_DecryptInit_ex = NULL;
 EVP_DecryptUpdate_Func pEVP_DecryptUpdate = NULL;
 EVP_DecryptFinal_ex_Func pEVP_DecryptFinal_ex = NULL;
 
+// 암호화된 키를 파일에 저장
+bool SaveKeyToFile(const AnsiString& key, const AnsiString& filename)
+{
+    // 파일이 이미 존재하면 저장하지 않고 skip
+    if (GetFileAttributesA(filename.c_str()) != INVALID_FILE_ATTRIBUTES) {
+        return true; // 이미 존재하면 성공으로 간주하고 skip
+    }
+
+    DATA_BLOB DataIn, DataOut;
+    DataIn.pbData = (BYTE*)key.c_str();
+    DataIn.cbData = key.Length();
+
+    if (CryptProtectData(&DataIn, L"Key", NULL, NULL, NULL, 0, &DataOut)) {
+        HANDLE hFile = CreateFileA(filename.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (hFile != INVALID_HANDLE_VALUE) {
+            DWORD written = 0;
+            WriteFile(hFile, DataOut.pbData, DataOut.cbData, &written, NULL);
+            CloseHandle(hFile);
+            LocalFree(DataOut.pbData);
+            return true;
+        }
+        LocalFree(DataOut.pbData);
+    }
+    return false;
+}
+
+// 파일에서 암호화된 키를 읽어 복호화
+AnsiString LoadKeyFromFile(const AnsiString& filename)
+{
+    HANDLE hFile = CreateFileA(filename.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (hFile == INVALID_HANDLE_VALUE) return "";
+
+    DWORD fileSize = GetFileSize(hFile, NULL);
+    BYTE* buffer = new BYTE[fileSize];
+    DWORD read = 0;
+    ReadFile(hFile, buffer, fileSize, &read, NULL);
+    CloseHandle(hFile);
+
+    DATA_BLOB DataIn, DataOut;
+    DataIn.pbData = buffer;
+    DataIn.cbData = fileSize;
+
+    AnsiString result = "";
+    if (CryptUnprotectData(&DataIn, NULL, NULL, NULL, NULL, 0, &DataOut)) {
+        result = AnsiString((char*)DataOut.pbData, DataOut.cbData);
+        LocalFree(DataOut.pbData);
+    }
+    delete[] buffer;
+    return result;
+}
+
+AnsiString GenerateRandom16Char()
+{
+    const char charset[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const int charsetSize = sizeof(charset) - 1;
+    char buf[17] = {0};
+    unsigned char rnd[16];
+
+    if (!pRAND_bytes || pRAND_bytes(rnd, 16) != 1)
+        return "";
+
+    for (int i = 0; i < 16; ++i)
+        buf[i] = charset[rnd[i] % charsetSize];
+
+    return AnsiString(buf);
+}
+
 void InitOpenSSL()
 {
     hOpenSSL = LoadLibraryA("libcrypto-3-x64.dll"); // 또는 libcrypto-1_1-x64.dll 등 환경에 맞게
@@ -67,6 +135,12 @@ void InitOpenSSL()
         FreeLibrary(hOpenSSL);
         hOpenSSL = NULL;
     }
+
+    if (!SaveKeyToFile(GenerateRandom16Char(), "keyfile.dat")) // 키를 파일에 저장
+    {
+        ShowMessage("Failed to save key to file");
+        return;
+    }
 }
 
 void FreeOpenSSL()
@@ -81,8 +155,9 @@ AnsiString getKey() {
     /* The key should be stored in secure storage,
     * In this scenario, testkey will be used until secure storage implemented.
     */
-    AnsiString testkey = "your16bytekey123";
-    return testkey;
+    //AnsiString testkey = "your16bytekey123";
+    //return testkey;
+    return LoadKeyFromFile("keyfile.dat"); // 파일에서 키를 읽어옴
 }
 
 AnsiString AESEncryptLine(const AnsiString& plain, const AnsiString& key)
