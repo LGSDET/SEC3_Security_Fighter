@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #pragma hdrstop
@@ -30,7 +30,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->MainFormOnTaskBar = true;
 
         Application->CreateForm(__classid(TForm1), &Form1);
-		Application->CreateForm(__classid(TAreaConfirm), &AreaConfirm);
+        Application->CreateForm(__classid(TAreaConfirm), &AreaConfirm);
         Application->CreateForm(__classid(TLoginDiaglog), &LoginDiaglog);
 
 		printf("ADS-B Display Application started\n");

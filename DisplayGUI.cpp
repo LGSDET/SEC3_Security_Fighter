@@ -1,4 +1,4 @@
-//---------------------------------------------------------------------------
+﻿//---------------------------------------------------------------------------
 
 #include <vcl.h>
 #include <new>
@@ -25,6 +25,7 @@
 #include "SBS_Message.h"
 #include "CPA.h"
 #include "LoginDialog.h"
+#include "crypto.h"
 
 #define MAP_CENTER_LAT  40.73612;
 #define MAP_CENTER_LON -80.33158;
@@ -34,7 +35,6 @@
 #define   LEFT_MOUSE_DOWN   1
 #define   RIGHT_MOUSE_DOWN  2
 #define   MIDDLE_MOUSE_DOWN 4
-
 
 #define BG_INTENSITY   0.37
 //---------------------------------------------------------------------------
@@ -1333,9 +1333,13 @@ void __fastcall TTCPClientSBSHandleThread::HandleInput(void)
   if (Form1->RecordSBSStream)
   {
    __int64 CurrentTime;
+   InitOpenSSL();
    CurrentTime=GetCurrentTimeInMsec();
-   Form1->RecordSBSStream->WriteLine(IntToStr(CurrentTime));
-   Form1->RecordSBSStream->WriteLine(StringMsgBuffer);
+   AnsiString encTime = AESEncryptLine(IntToStr(CurrentTime), getKey());
+   AnsiString encLine = AESEncryptLine(StringMsgBuffer, getKey());
+   Form1->RecordSBSStream->WriteLine(encTime);
+   Form1->RecordSBSStream->WriteLine(encLine);
+   FreeOpenSSL();
   }
 
   if (Form1->BigQueryCSV)
@@ -1389,8 +1393,19 @@ void __fastcall TTCPClientSBSHandleThread::Execute(void)
 	 {
 	  try
         {
-		 StringMsgBuffer= Form1->PlayBackSBSStream->ReadLine();
-         Time=StrToInt64(StringMsgBuffer);
+		 InitOpenSSL();
+		 AnsiString encTime = Form1->PlayBackSBSStream->ReadLine();
+		 AnsiString encLine = Form1->PlayBackSBSStream->ReadLine();
+		 AnsiString decTime = AESDecryptLine(encTime, getKey());
+		 AnsiString decLine = AESDecryptLine(encLine, getKey());
+		 FreeOpenSSL();
+		 //printf("SBS Time is:(%d)%s\n", decTime.Length(), decTime.c_str());
+		 //printf("SBS String is:(%d)%s\n", decLine.Length(), decLine.c_str());
+
+
+		 Time=StrToInt64(decTime);
+		 //StringMsgBuffer= Form1->PlayBackSBSStream->ReadLine();
+		 //Time=StrToInt64(StringMsgBuffer);
 		 if (First)
 	      {
 		   First=false;
@@ -1399,7 +1414,7 @@ void __fastcall TTCPClientSBSHandleThread::Execute(void)
 		 SleepTime=Time-LastTime;
 		 LastTime=Time;
 		 if (SleepTime>0) Sleep(SleepTime);
-		 StringMsgBuffer= Form1->PlayBackSBSStream->ReadLine();
+		 StringMsgBuffer= decLine;//Form1->PlayBackSBSStream->ReadLine();
 		}
         catch (...)
 		{
