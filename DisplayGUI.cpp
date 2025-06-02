@@ -1056,9 +1056,13 @@ void __fastcall TTCPClientRawHandleThread::HandleInput(void)
   if (Form1->RecordRawStream)
   {
    __int64 CurrentTime;
+   InitOpenSSL();
    CurrentTime=GetCurrentTimeInMsec();
-   Form1->RecordRawStream->WriteLine(IntToStr(CurrentTime));
-   Form1->RecordRawStream->WriteLine(StringMsgBuffer);
+   AnsiString encTime = AESEncryptLine(IntToStr(CurrentTime), getKey());
+   AnsiString encLine = AESEncryptLine(StringMsgBuffer, getKey());
+   Form1->RecordSBSStream->WriteLine(encTime);
+   Form1->RecordSBSStream->WriteLine(encLine);
+   FreeOpenSSL();
   }
 
   Status=decode_RAW_message(StringMsgBuffer, &mm);
@@ -1246,18 +1250,28 @@ void __fastcall TTCPClientRawHandleThread::Execute(void)
 	 else
 	 {
 	  try
-        {
-		 StringMsgBuffer= Form1->PlayBackRawStream->ReadLine();
-         Time=StrToInt64(StringMsgBuffer);
+		{
+		 InitOpenSSL();
+		 AnsiString encTime = Form1->PlayBackSBSStream->ReadLine();
+		 AnsiString encLine = Form1->PlayBackSBSStream->ReadLine();
+		 AnsiString decTime = AESDecryptLine(encTime, getKey());
+		 AnsiString decLine = AESDecryptLine(encLine, getKey());
+		 FreeOpenSSL();
+		 //printf("SBS Time is:(%d)%s\n", decTime.Length(), decTime.c_str());
+		 //printf("SBS String is:(%d)%s\n", decLine.Length(), decLine.c_str());
+
+		 Time=StrToInt64(decTime);
+		 //StringMsgBuffer= Form1->PlayBackRawStream->ReadLine();
+		 //Time=StrToInt64(StringMsgBuffer);
 		 if (First)
-	      {
+		  {
 		   First=false;
 		   LastTime=Time;
 		  }
 		 SleepTime=Time-LastTime;
 		 LastTime=Time;
 		 if (SleepTime>0) Sleep(SleepTime);
-		 StringMsgBuffer= Form1->PlayBackRawStream->ReadLine();
+		 StringMsgBuffer= decLine;//Form1->PlayBackRawStream->ReadLine();
 		}
         catch (...)
 		{
