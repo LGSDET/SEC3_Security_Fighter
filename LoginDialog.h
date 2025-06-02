@@ -17,7 +17,9 @@ __published:
     TEdit *EditPassword;
     TButton *ButtonLogin;
 	TButton *ButtonCancel;
+	TLabel *Label3;
     void __fastcall ButtonLoginClick(TObject *Sender);
+	void __fastcall ButtonCancelClick(TObject *Sender);
 private:
     bool loginSuccess;
 public:

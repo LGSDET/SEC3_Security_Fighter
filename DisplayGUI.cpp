@@ -24,6 +24,7 @@
 #include "TimeFunctions.h"
 #include "SBS_Message.h"
 #include "CPA.h"
+#include "LoginDialog.h"
 
 #define MAP_CENTER_LAT  40.73612;
 #define MAP_CENTER_LON -80.33158;
@@ -660,6 +661,7 @@ void __fastcall TForm1::Exit1Click(TObject *Sender)
 //---------------------------------------------------------------------------
  void __fastcall TForm1::HookTrack(int X, int Y,bool CPA_Hook)
  {
+  static int s_AdminLogin = 0;
   double VLat,VLon, dlat,dlon,Range;
   int X1,Y1;
    uint32_t *Key;
@@ -668,6 +670,15 @@ void __fastcall TForm1::Exit1Click(TObject *Sender)
    double MinRange;
   ght_iterator_t iterator;
   TADS_B_Aircraft* Data;
+
+  // Login Dialog
+  if (s_AdminLogin != 1)
+  {
+    int result = LoginDiaglog->ShowModal();
+    if(!LoginDiaglog->IsLoginSuccess())
+	  return;
+	s_AdminLogin = 1;
+  }
 
   Y1=(ObjectDisplay->Height-1)-Y;
   X1=X;
