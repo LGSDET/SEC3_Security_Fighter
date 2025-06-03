@@ -36,7 +36,7 @@
 #define SBS_EMERGENCY         19
 #define SBS_SBI               20
 #define SBS_IS_ON_GROUND      21
-
+#define SBS_MAX_LENGTH        20
 
 static char *strsep (char **stringp, const char *delim);
 static  int hexDigitVal(int c);
@@ -105,8 +105,8 @@ static const char *get_SBS_timestamp (void)
   /* Since the date,time,date,time is just a repeat, build the whole string once and
    * then add it to each MSG output.
    */
-  strcpy (timestamp, ts_buf);
-  strcat (timestamp, ts_buf);
+  strcpy_s(timestamp, sizeof(timestamp), ts_buf);
+  strcat_s(timestamp, sizeof(timestamp), ts_buf);
   timestamp [ts_len-1] = '\0';    /* remove last ',' */
   return (timestamp);
 }
@@ -247,19 +247,19 @@ bool SBS_Message_Decode( char *msg)
 	  return(false);
 	}
 
-	if ((SBS_Fields[SBS_HEX_INDENT]==0) || (strlen(SBS_Fields[SBS_HEX_INDENT]) < 6) || (strlen(SBS_Fields[SBS_HEX_INDENT]) > 7))  // icao must be 6 characters
+	if ((SBS_Fields[SBS_HEX_INDENT]==0) || (strnlen_s(SBS_Fields[SBS_HEX_INDENT], SBS_MAX_LENGTH) < 6) || (strnlen_s(SBS_Fields[SBS_HEX_INDENT], SBS_MAX_LENGTH) > 7))  // icao must be 6 characters
 	   {
-		if ((SBS_Fields[SBS_HEX_INDENT]==0) || (strlen(SBS_Fields[SBS_HEX_INDENT]) > 7))
+		if ((SBS_Fields[SBS_HEX_INDENT]==0) || (strnlen_s(SBS_Fields[SBS_HEX_INDENT], SBS_MAX_LENGTH) > 7))
 		{
 		 printf("invalid ICAO 1 Field is %s\n",SBS_Fields[SBS_HEX_INDENT]);
 		 return(false);
 		}
 		else
 		{
-		 int current_length=strlen(SBS_Fields[SBS_HEX_INDENT]);
+		 int current_length=strnlen_s(SBS_Fields[SBS_HEX_INDENT], SBS_MAX_LENGTH);
 		 int padding_length = 6 - current_length;
 		 memset(FixHex, '0', padding_length);
-		 strcpy(FixHex +padding_length, SBS_Fields[SBS_HEX_INDENT]);
+     strcpy_s(FixHex + padding_length, sizeof(FixHex) - padding_length, SBS_Fields[SBS_HEX_INDENT]);
 		 //printf("Fixed Hex Was %s now %s\n", SBS_Fields[SBS_HEX_INDENT],FixHex);
 		 SBS_Fields[SBS_HEX_INDENT]=FixHex;
 		}
@@ -313,9 +313,9 @@ bool SBS_Message_Decode( char *msg)
       ADS_B_Aircraft->LastSeen =CurrentTime;
       ADS_B_Aircraft->NumMessagesSBS++;
 
-	  if ((SBS_Fields[SBS_CALLSIGN]) && strlen(SBS_Fields[SBS_CALLSIGN]) > 0)
+	  if ((SBS_Fields[SBS_CALLSIGN]) && strnlen_s(SBS_Fields[SBS_CALLSIGN], SBS_MAX_LENGTH) > 0)
 		 {
-		   strncpy(ADS_B_Aircraft->FlightNum, SBS_Fields[SBS_CALLSIGN], 9);
+       strcpy_s(ADS_B_Aircraft->FlightNum, sizeof(ADS_B_Aircraft->FlightNum), SBS_Fields[SBS_CALLSIGN]);
 		   ADS_B_Aircraft->FlightNum[8] = '\0';
 		   ADS_B_Aircraft->HaveFlightNum = true;
 		   for (unsigned i = 0; i < 8; ++i)
@@ -334,7 +334,7 @@ bool SBS_Message_Decode( char *msg)
 					}
               }
          }
-	  if ((SBS_Fields[SBS_ALTITUDE]) && strlen(SBS_Fields[SBS_ALTITUDE]) > 0)
+	  if ((SBS_Fields[SBS_ALTITUDE]) && strnlen_s(SBS_Fields[SBS_ALTITUDE], SBS_MAX_LENGTH) > 0)
 		 {
 		   char *endptr = NULL;
 		   double tmp=strtod(SBS_Fields[SBS_ALTITUDE], &endptr);
@@ -344,7 +344,7 @@ bool SBS_Message_Decode( char *msg)
 			   ADS_B_Aircraft->Altitude=tmp;
 			  }
 		 }
-	  if ((SBS_Fields[SBS_GROUND_SPEED]) && strlen(SBS_Fields[SBS_GROUND_SPEED]) > 0)
+	  if ((SBS_Fields[SBS_GROUND_SPEED]) && strnlen_s(SBS_Fields[SBS_GROUND_SPEED], SBS_MAX_LENGTH) > 0)
 		 {
 		  char *endptr = NULL;
 
@@ -354,7 +354,7 @@ bool SBS_Message_Decode( char *msg)
 			   ADS_B_Aircraft->Speed=tmp;
 			  }
 		 }
-	  if ((SBS_Fields[SBS_TRACK_HEADING]) && strlen(SBS_Fields[SBS_TRACK_HEADING]) > 0)
+	  if ((SBS_Fields[SBS_TRACK_HEADING]) && strnlen_s(SBS_Fields[SBS_TRACK_HEADING], SBS_MAX_LENGTH) > 0)
 		 {
 		  char *endptr = NULL;
 
@@ -365,8 +365,8 @@ bool SBS_Message_Decode( char *msg)
 			   ADS_B_Aircraft->HaveSpeedAndHeading=true;
 			  }
 		 }
-	  if (SBS_Fields[SBS_LATITUDE]  && (strlen(SBS_Fields[SBS_LATITUDE]) > 0) &&
-          SBS_Fields[SBS_LONGITUDE] && (strlen(SBS_Fields[SBS_LONGITUDE]) > 0))
+	  if (SBS_Fields[SBS_LATITUDE]  && (strnlen_s(SBS_Fields[SBS_LATITUDE], SBS_MAX_LENGTH) > 0) &&
+          SBS_Fields[SBS_LONGITUDE] && (strnlen_s(SBS_Fields[SBS_LONGITUDE], SBS_MAX_LENGTH) > 0))
 		 {
 		   char *endptr = NULL;
            double TempLat,TempLon;
@@ -388,7 +388,7 @@ bool SBS_Message_Decode( char *msg)
               }
 		 }
 
-		if ((SBS_Fields[SBS_VERTICAL_RATE]) && strlen(SBS_Fields[SBS_VERTICAL_RATE]) > 0)
+		if ((SBS_Fields[SBS_VERTICAL_RATE]) && strnlen_s(SBS_Fields[SBS_VERTICAL_RATE], SBS_MAX_LENGTH) > 0)
 		  {
 			  char *endptr = NULL;
 

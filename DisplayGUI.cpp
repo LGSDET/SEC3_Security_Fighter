@@ -90,7 +90,7 @@ static const char * strnistr(const char * pszSource, DWORD dwLength, const char 
 		return pszSubStr;
 	}
 
-	dwStrLen = strlen(pszFind);
+	dwStrLen = strnlen_s(pszFind, dwStrLen);
 
 	// can pszSource possibly contain pszFind?
 	if (dwStrLen > dwLength)
@@ -117,7 +117,7 @@ static char *stristr(const char *String, const char *Pattern)
   char *pptr, *sptr, *start;
   size_t  slen, plen;
 
-  for (start = (char *)String,pptr  = (char *)Pattern,slen  = strlen(String),plen  = strlen(Pattern);
+  for (start = (char *)String,pptr  = (char *)Pattern,slen  = strnlen_s(String, 10000),plen  = strnlen_s(Pattern, 10000);
        slen >= plen;start++, slen--)
       {
             /* find start of pattern in string */
