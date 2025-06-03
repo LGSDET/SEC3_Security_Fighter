@@ -2,8 +2,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <windows.h>
-#include <gl\gl.h>
-#include <gl\glu.h>
+#include <gl/gl.h>
+#include <gl/glu.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -313,7 +313,7 @@ void DrawAirTrackUnknown(float x, float y)
  {
   glBegin(GL_TRIANGLE_FAN );
   glVertex2f( xc, yc); // Center.
-  for( float a = 0;  a <= 360; a+=5 )
+  for( int a = 0;  a <= 360; a+=5 )
    {
 	  float ang = (float) RADPERDEG*a;
 	  float x = xc + (float) (major*cos( ang ));

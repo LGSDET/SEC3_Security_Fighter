@@ -7,7 +7,7 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "Components\OpenGLv0.5BDS2006\Component\OpenGLPanel.h"
+#include "Components/OpenGLv0.5BDS2006/Component/OpenGLPanel.h"
 #include <ComCtrls.hpp>
 #include <ExtCtrls.hpp>
 #include <Menus.hpp>
