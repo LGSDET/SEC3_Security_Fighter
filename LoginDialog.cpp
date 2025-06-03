@@ -92,7 +92,7 @@ void __fastcall TLoginDiaglog::ButtonLoginClick(TObject *Sender)
                     // Convert key to hex string
                     char hash_hex[32 * 2 + 1] = {0};
                     for (int i = 0; i < 32; ++i)
-                        sprintf(&hash_hex[i * 2], "%02x", key[i]);
+                        sprintf_s(&hash_hex[i * 2], sizeof(hash_hex) - (i * 2), "%02x", key[i]);
 
                     if (hash == hash_hex) {
                         loginSuccess = true;

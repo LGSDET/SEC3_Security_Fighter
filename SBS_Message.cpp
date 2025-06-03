@@ -127,7 +127,8 @@ static uint32_t aircraft_get_addr (uint8_t a0, uint8_t a1, uint8_t a2)
 //---------------------------------------------------------------------------
 bool ModeS_Build_SBS_Message (const modeS_message *mm, TADS_B_Aircraft *a, char *msg)
 {
-   char *p = msg;
+  constexpr int P_BUFSIZE = 200
+  char *p = msg;
   int   emergency = 0, ground = 0, alert = 0, spi = 0;
   const char *date_str;
 
@@ -157,40 +158,40 @@ bool ModeS_Build_SBS_Message (const modeS_message *mm, TADS_B_Aircraft *a, char 
 
   if (mm->msg_type == 0)
   {
-    p += sprintf (p, "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,,,,",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,,,,",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->altitude);
   }
   else if (mm->msg_type == 4)
   {
-    p += sprintf (p, "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,%d,%d,%d,%d",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,%d,%d,%d,%d",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->altitude, alert, emergency, spi, ground);
   }
   else if (mm->msg_type == 5)
   {
-    p += sprintf (p, "MSG,6,1,1,%06X,1,%s,,,,,,,,%d,%d,%d,%d,%d",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,6,1,1,%06X,1,%s,,,,,,,,%d,%d,%d,%d,%d",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->identity, alert, emergency, spi, ground);
   }
   else if (mm->msg_type == 11)
   {
-    p += sprintf (p, "MSG,8,1,1,%06X,1,%s,,,,,,,,,,,,",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,8,1,1,%06X,1,%s,,,,,,,,,,,,",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]), date_str);
   }
   else if (mm->msg_type == 17 && mm->ME_type == 4)
   {
-    p += sprintf (p, "MSG,1,1,1,%06X,1,%s,%s,,,,,,,,0,0,0,0",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,1,1,1,%06X,1,%s,%s,,,,,,,,0,0,0,0",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->flight);
   }
   else if (mm->msg_type == 17 && mm->ME_type >= 9 && mm->ME_type <= 18)
   {
 	if ((!a->HaveLatLon) || !VALID_POS(a))
-		 p += sprintf (p, "MSG,3,1,1,%06X,1,%s,,%d,,,,,,,0,0,0,0",
+		 p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,3,1,1,%06X,1,%s,,%d,,,,,,,0,0,0,0",
                        aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                        date_str, mm->altitude);
-    else p += sprintf (p, "MSG,3,1,1,%06X,1,%s,,%d,,,%1.5f,%1.5f,,,0,0,0,0",
+    else p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,3,1,1,%06X,1,%s,,%d,,,%1.5f,%1.5f,,,0,0,0,0",
                        aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
 					   date_str, mm->altitude, a->Latitude, a->Longitude);
   }
@@ -198,13 +199,13 @@ bool ModeS_Build_SBS_Message (const modeS_message *mm, TADS_B_Aircraft *a, char 
   {
     int vr = (mm->vert_rate_sign == 0 ? 1 : -1) * 64 * (mm->vert_rate - 1);
 
-    p += sprintf (p, "MSG,4,1,1,%06X,1,%s,,,%d,%d,,,%i,,0,0,0,0",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,4,1,1,%06X,1,%s,,,%d,%d,,,%i,,0,0,0,0",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, (int)a->Speed, (int)a->Heading, vr);
   }
   else if (mm->msg_type == 21)
   {
-    p += sprintf (p, "MSG,6,1,1,%06X,1,%s,,,,,,,,%d,%d,%d,%d,%d",
+    p += sprintf (p, P_BUFSIZE - (p - msg), "MSG,6,1,1,%06X,1,%s,,,,,,,,%d,%d,%d,%d,%d",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->identity, alert, emergency, spi, ground);
   }
