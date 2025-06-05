@@ -4480,14 +4480,14 @@ Init algorithm:
 
 static int stbi__parse_zlib(stbi__zbuf *a, int parse_header)
 {
-   int final, type;
+   int finalval, type;
    if (parse_header)
       if (!stbi__parse_zlib_header(a)) return 0;
    a->num_bits = 0;
    a->code_buffer = 0;
    a->hit_zeof_once = 0;
    do {
-      final = stbi__zreceive(a,1);
+      finalval = stbi__zreceive(a,1);
       type = stbi__zreceive(a,2);
       if (type == 0) {
          if (!stbi__parse_uncompressed_block(a)) return 0;
@@ -4503,7 +4503,7 @@ static int stbi__parse_zlib(stbi__zbuf *a, int parse_header)
          }
          if (!stbi__parse_huffman_block(a)) return 0;
       }
-   } while (!final);
+   } while (!finalval);
    return 1;
 }
 
@@ -4862,14 +4862,14 @@ static int stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint3
 {
    int bytes = (depth == 16 ? 2 : 1);
    int out_bytes = out_n * bytes;
-   stbi_uc *final;
+   stbi_uc *finalval;
    int p;
    if (!interlaced)
       return stbi__create_png_image_raw(a, image_data, image_data_len, out_n, a->s->img_x, a->s->img_y, depth, color);
 
    // de-interlacing
-   final = (stbi_uc *) stbi__malloc_mad3(a->s->img_x, a->s->img_y, out_bytes, 0);
-   if (!final) return stbi__err("outofmem", "Out of memory");
+   finalval = (stbi_uc *) stbi__malloc_mad3(a->s->img_x, a->s->img_y, out_bytes, 0);
+   if (!finalval) return stbi__err("outofmem", "Out of memory");
    for (p=0; p < 7; ++p) {
       int xorig[] = { 0,4,0,2,0,1,0 };
       int yorig[] = { 0,0,4,0,2,0,1 };
@@ -4882,14 +4882,14 @@ static int stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint3
       if (x && y) {
          stbi__uint32 img_len = ((((a->s->img_n * x * depth) + 7) >> 3) + 1) * y;
          if (!stbi__create_png_image_raw(a, image_data, image_data_len, out_n, x, y, depth, color)) {
-            STBI_FREE(final);
+            STBI_FREE(finalval);
             return 0;
          }
          for (j=0; j < y; ++j) {
             for (i=0; i < x; ++i) {
                int out_y = j*yspc[p]+yorig[p];
                int out_x = i*xspc[p]+xorig[p];
-               memcpy(final + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
+               memcpy(finalval + out_y*a->s->img_x*out_bytes + out_x*out_bytes,
                       a->out + (j*x+i)*out_bytes, out_bytes);
             }
          }
@@ -4898,7 +4898,7 @@ static int stbi__create_png_image(stbi__png *a, stbi_uc *image_data, stbi__uint3
          image_data_len -= img_len;
       }
    }
-   a->out = final;
+   a->out = finalval;
 
    return 1;
 }

@@ -417,9 +417,9 @@ TDecodeStatus decode_RAW_message (AnsiString MsgIn,modeS_message *mm)
   uint8_t      *hex, *end;
   uint8_t       msg[512];
 
-  strcpy((char *)msg,MsgIn.c_str());
-  strcat((char *)msg,"\n");
-  msg_len=strlen((char *)msg);
+  strcpy_s((char *)msg, sizeof(msg), MsgIn.c_str());
+  strcat_s((char *)msg, sizeof(msg), "\n");
+  msg_len = strnlen_s((char *)msg, sizeof(msg));
 
   if (msg_len == 0)  /* all was consumed */
      return (BadMessageEmpty1);
