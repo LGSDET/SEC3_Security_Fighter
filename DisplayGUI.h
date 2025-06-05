@@ -23,6 +23,7 @@
 #include <Dialogs.hpp>
 #include <IdTCPClient.hpp>
 #include <IdTCPConnection.hpp>
+#include <IdSSLOpenSSL.hpp>
 #include "cspin.h"
 
 typedef float T_GL_Color[4];

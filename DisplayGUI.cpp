@@ -1107,6 +1107,16 @@ void __fastcall TTCPClientRawHandleThread::HandleInput(void)
 //---------------------------------------------------------------------------
 void __fastcall TForm1::RawConnectButtonClick(TObject *Sender)
 {
+/** code for ssl */
+ auto sslHandler = new TIdSSLIOHandlerSocketOpenSSL(IdTCPClientRaw);
+ sslHandler->SSLOptions->Method = TIdSSLVersion::sslvTLSv1_2;  // or sslvTLSv1_3 if supported
+ sslHandler->SSLOptions->Mode   = TIdSSLMode::sslmClient;
+ sslHandler->SSLOptions->VerifyMode.Clear();
+ sslHandler->SSLOptions->VerifyDepth   = 0;
+ sslHandler->PassThrough = false;
+ IdTCPClientRaw->IOHandler = sslHandler;
+ /** end of code for ssl */
+
  IdTCPClientRaw->Host=RawIpAddress->Text;
  IdTCPClientRaw->Port=30002;
 
