@@ -158,13 +158,13 @@ bool ModeS_Build_SBS_Message (const modeS_message *mm, TADS_B_Aircraft *a, char 
 
   if (mm->msg_type == 0)
   {
-    p += snprintf_s (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,,,,",
+    p += sprintf_s (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,,,,",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->altitude);
   }
   else if (mm->msg_type == 4)
   {
-    p += snprintf_s (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,%d,%d,%d,%d",
+    p += sprintf_s (p, P_BUFSIZE - (p - msg), "MSG,5,1,1,%06X,1,%s,,%d,,,,,,,%d,%d,%d,%d",
                   aircraft_get_addr(mm->AA[0], mm->AA[1], mm->AA[2]),
                   date_str, mm->altitude, alert, emergency, spi, ground);
   }
