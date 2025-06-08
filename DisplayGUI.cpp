@@ -1060,8 +1060,8 @@ void __fastcall TTCPClientRawHandleThread::HandleInput(void)
    CurrentTime=GetCurrentTimeInMsec();
    AnsiString encTime = AESEncryptLine(IntToStr(CurrentTime), getKey());
    AnsiString encLine = AESEncryptLine(StringMsgBuffer, getKey());
-   Form1->RecordSBSStream->WriteLine(encTime);
-   Form1->RecordSBSStream->WriteLine(encLine);
+   Form1->RecordRawStream->WriteLine(encTime);
+   Form1->RecordRawStream->WriteLine(encLine);
    FreeOpenSSL();
   }
 
@@ -1262,8 +1262,8 @@ void __fastcall TTCPClientRawHandleThread::Execute(void)
 	  try
 		{
 		 InitOpenSSL();
-		 AnsiString encTime = Form1->PlayBackSBSStream->ReadLine();
-		 AnsiString encLine = Form1->PlayBackSBSStream->ReadLine();
+		 AnsiString encTime = Form1->PlayBackRawStream->ReadLine();
+		 AnsiString encLine = Form1->PlayBackRawStream->ReadLine();
 		 AnsiString decTime = AESDecryptLine(encTime, getKey());
 		 AnsiString decLine = AESDecryptLine(encLine, getKey());
 		 FreeOpenSSL();
