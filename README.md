@@ -27,9 +27,11 @@ Here is the install and test guide for the Windows GUI application written by th
    - check the flight info is displayed in Close Control Window.
 
  b. Encrypted Transfer between GUI app. and Raspberry PI.
+   - Generate certificate and key in "dump1090" directory using follow command.
+     - openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=your.server.com"
    - Execute "dump1090" using below cmd in RaspberryPI.
      - sudo ./dump1090 --interactive --net
-   - Execute "adsbhub.sh" in RaspberryPI.
+   - Execute "adsbhub.sh" located in "/usr/bin" in RaspberryPI.
      - sudo adsbhub.sh 
    - Check the IP address of the PI within the same network and enter the IP in "Raw Connect" of the GUI application.
    - After the connection is successful, wait until flight information appears in the GUI.
