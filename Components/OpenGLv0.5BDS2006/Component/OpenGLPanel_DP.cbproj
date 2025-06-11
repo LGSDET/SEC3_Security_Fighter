@@ -5,12 +5,11 @@
         <FrameworkType>VCL</FrameworkType>
         <MainSource>OpenGLPanel_DP.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <ProjectName Condition="'$(ProjectName)'==''">OpenGLPanel_DP</ProjectName>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Package</AppType>
-        <CC_Suffix Condition="'$(CC_Suffix)'==''">c</CC_Suffix>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
         <Base>true</Base>

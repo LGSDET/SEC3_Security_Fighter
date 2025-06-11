@@ -1,3 +1,75 @@
-*.o
-*.d
+# C++Builder / RAD Studio 프로젝트용 .gitignore
+
+# 빌드 출력 디렉토리
+*.dcu
+*.dcp
+*.bpl
+*.bpi
+*.dsk
+*.local
+*.identcache
+*.~*
+*.stat
+*.tds
 *.exe
+*.dll
+*.lib
+*.obj
+*.pch
+*.so
+*.a
+*.o
+*.map
+*.bak
+*.dres
+*.rsm
+
+# RAD Studio 특정 출력물
+*.dproj.local
+*.groupproj.local
+*.tvsconfig
+*.tvsconfig1
+*.tvsconfig2
+*.tvsconfig3
+*.tgsconfig
+
+# RAD Studio 캐시
+__history/
+__recovery/
+Win32/
+Win64/
+OSX32/
+OSX64/
+iOSDevice/
+iOSSimulator/
+Android/
+Linux64/
+
+# C++Builder 자동 생성 프리컴파일 헤더
+*.gch
+*.hpp.~*
+
+# 로그 및 임시 파일
+*.log
+*.tmp
+*.cache
+*.tgz
+*.tar.gz
+
+# Mac 관련
+.DS_Store
+
+# 기타 IDE 설정 파일
+*.idea/
+*.vscode/
+
+# Git 자체
+.git/
+
+# Windows build folders
+build/
+Debug/
+Release/
+x64/
+x86/
+Win32/
